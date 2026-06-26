@@ -1,2 +1,0 @@
-# AGCoT fine-tuning pipeline
-

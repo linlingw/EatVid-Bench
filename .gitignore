@@ -28,7 +28,7 @@ env/
 .venv/
 
 # Data and models
-data/
+# data/
 output/
 results/
 *.log
@@ -74,7 +74,7 @@ logs/
 wandb/
 
 # Model caches
-models/
+# models/
 *.pt
 *.pth
 *.bin

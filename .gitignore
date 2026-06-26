@@ -1,0 +1,102 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.manifest
+*.spec
+.installed.cfg
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# Data and models
+data/
+output/
+results/
+*.log
+*.mp4
+*.avi
+*.mkv
+*.mov
+*.flv
+*.wmv
+*.webm
+
+# Annotations and intermediate files
+annotations/
+cache/
+temp/
+tmp/
+
+# Sensitive information
+.env
+*.key
+*_secret.yaml
+*_secret.json
+api_config.py
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# Training checkpoints
+checkpoints/
+saves/
+logs/
+wandb/
+
+# Model caches
+models/
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.ckpt
+
+# Large files
+*.tar.gz
+*.zip
+*.7z
+*.rar
+
+# OS
+.DS_Store
+Thumbs.db
+*.log
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Documentation
+docs/_build/

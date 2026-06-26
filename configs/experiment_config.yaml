@@ -1,0 +1,170 @@
+# Eating Behavior Analysis Experiment Configuration
+
+# Data settings
+data:
+  # video_root: Set to null to auto-discover from annotation_root/metadata/{video_id}/
+  # If set, will look for videos in video_root/{video_id}.mp4 or video_root/{video_id}/{video_id}.mp4
+  video_root: null  # Auto-discover from metadata folder
+  annotation_root: "/media/nas_data/zxp_data/output"  # Path to annotation outputs
+  # annotation_root: "/home/ych/zxp/analysis/output"  # Path to annotation outputs
+  task_id_path: "/media/nas_data/zxp_data/eccv/analysis/experiments/test_id.json"
+  # to a specific subset of task IDs. Set to null to run all tasks.
+  split_seed: 42
+  train_ratio: 0.70
+  val_ratio: 0.15
+  test_ratio: 0.15
+  # Representative subset for closed-source API evaluation
+  representative_subset_size: 100
+
+# Frame sampling settings
+sampling:
+  # Long-term tasks (action_timeline, facial_expression)
+  long_term:
+    fps: 2  # 2-5 fps for temporal understanding
+    max_frames: 64
+  # Short-term tasks (bite_detection)
+  short_term:
+    fps: 15  # Higher fps around key events
+    context_window: 2.0  # seconds before/after event
+  # Sliding window for long videos
+  sliding_window:
+    window_size: 16  # frames per window
+    overlap: 0.5  # 50% overlap
+
+# Model settings
+models:
+  default: "qwen2_5_vl_7b"
+  available:
+    - qwen2_5_vl_7b
+    - qwen2_vl_7b
+    - internvl2_8b
+    - gpt4o
+    - gemini_pro
+    - humanomni_7b
+    - internvideo2_5
+    - llava_next_video
+    - videollama2_7b
+    - cogvideo_x
+    - minicpm_o_4_5
+    - videollama3_7b
+    - molmo2_8b
+  qwen2_5_vl_7b:
+    video_use_nframes: True   # true=均匀采样固定帧数, false=按fps采样
+    video_nframes: 64         # nframes模式下的采样帧数
+    video_fps: 4.0            # fps模式下的采样率
+    video_max_pixels: 151200  # 每帧最大像素数 (360*420)
+
+  internvl2_8b:
+    video_use_nframes: False  # true=固定帧数; false=按fps采样（支持时序理解）
+    video_nframes: 64         # nframes模式下采样帧数
+    # video_nframes: 2000         # fps模式下最大帧数上限
+    video_fps: 2.0            # fps模式下的采样率
+    internvl_max_tiles: 1     # 每帧最大 tile 数（视频用1，图像可以更多）
+
+  videollama3_7b:
+    video_use_nframes: False
+    video_nframes: 2000 
+    video_fps: 2.0 
+    # gpu_id: 5 
+
+  humanomni_7b:
+    video_use_nframes: True  # true=固定帧数; false=按fps采样
+    video_nframes: 64         # nframes模式下采样帧数 / fps模式下最大帧数上限（建议与视频长度匹配）
+    video_fps: 2.0            # fps模式下的采样率
+
+  internvideo2_5:
+    video_use_nframes: True  # true=固定帧数; false=按fps采样
+    video_nframes: 64        # nframes模式下采样帧数
+    video_fps: 2.0            # fps模式下的采样率
+
+  llava_next_video:
+    video_use_nframes: True  # true=固定帧数; false=按fps采样
+    video_nframes: 64          # nframes模式下采样帧数
+    video_fps: 2.0            # fps模式下的采样率
+
+  videollama2_7b:
+    video_nframes: 64         # 采样帧数
+    video_sampling_mode: uniform  # 采样模式：uniform或fps
+
+  molmo2_8b:
+    fps: 0.2  # Frames per second for video processing (default 2.0)
+
+  cogvideo_x:
+    video_nframes: 32         # 采样帧数（CogVideo推荐32帧）
+
+  # Local model paths (set to null to download from HuggingFace)
+  # If local_path is specified, model will be loaded from local directory
+  local_paths:
+    qwen2_5_vl_7b: "/media/nas_data/zxp_data/test_models/Qwen2.5-VL-7B-Instruct"  # e.g., "/path/to/Qwen2.5-VL-7B-Instruct"
+    # qwen2_5_vl_7b: "/media/nas_data/zxp_data/LlamaFactory/saves/qwen2_5vl_no_cot_merged_rebuttal_final"
+    qwen2_vl_7b: null    # e.g., "/path/to/Qwen2-VL-7B-Instruct"
+    internvl2_8b: "/media/nas_data/zxp_data/test_models/InternVL2-8B"   # e.g., "/path/to/InternVL2-8B"
+    videollama3_7b: "/media/nas_data/zxp_data/test_models/VideoLLaMA3-7B" # e.g., "/path/to/VideoLLaMA3-7B"
+    humanomni_7b: "/media/nas_data/zxp_data/test_models/HumanOmni-7B-Omni"   # e.g., "/path/to/HumanOmni-7B-Video"
+    internvideo2_5: "/media/nas_data/zxp_data/test_models/InternVideo2_5"   # e.g., "/path/to/InternVideo2.5"
+    llava_next_video: "/media/nas_data/zxp_data/test_models/LLaVA-NeXT-Video-7B-hf"   # e.g., "/path/to/LLaVA-NeXT-Video-7B-hf"
+    videollama2_7b: "/media/nas_data/zxp_data/test_models/VideoLLaMA2-7B-16F"  # e.g., "/path/to/VideoLLaMA2-7B"
+    molmo2_8b: "/media/nas_data/zxp_data/test_models/Molmo2-8B"
+    minicpm_o_4_5: "/media/nas_data/zxp_data/test_models/MiniCPM-o-4_5"  # e.g., "/path/to/MiniCPM-o-4_5"
+    cogvideo_x: null  # e.g., "/path/to/CogVideoX-2B"
+
+# Task settings
+tasks:
+  bite_detection:
+    enabled: true
+    time_tolerance: 0.5  # seconds for matching
+    iou_threshold: 0.5
+  action_timeline:
+    enabled: true
+    iou_threshold: 0.5
+  facial_expression:
+    enabled: true
+    time_tolerance: 1.0
+  behavioral_health:
+    enabled: true
+    categories:
+      eating_speed: ["slow", "moderate", "fast"]
+      food_quality: ["poor", "moderate", "good"]
+      emotional_eating: ["low", "medium", "high"]
+
+# Evaluation settings
+evaluation:
+  metrics:
+    temporal:
+      - f1_at_iou
+      - temporal_iou
+      - mae_seconds
+    count:
+      - mae
+      - relative_error
+    text:
+      - bleu4
+      - bertscore
+    judge:
+      - gpt4_score
+  gpt_judge:
+    model: "gpt-4o"
+    dimensions:
+      - temporal_accuracy
+      - content_completeness
+      - language_fluency
+      - reasoning_quality
+
+# Training settings (for future fine-tuning)
+training:
+  lora:
+    r: 8
+    alpha: 32
+    dropout: 0.1
+  learning_rate: 2e-4
+  batch_size: 16
+  epochs: 5
+  warmup_ratio: 0.1
+  weight_decay: 0.01
+
+# Output settings
+output:
+  results_dir: "./results"
+  save_predictions: true
+  save_metrics: true
+  log_level: "INFO"
